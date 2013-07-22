@@ -49,7 +49,7 @@ pimcore.report.piwik.settings = Class.create({
                     items: this.getConfigurations()
                 }
             ],
-						bbar:["<span>Developed by: <a href=\"http://www.weblizards.de/\" target=\"_blank\" style=\"color: #000\" title=\"Weblizards - Custom Internet Solutions\">Weblizards - Custom Internet Solutions</a></span>"]
+			bbar:["<span>Developed by: <a href=\"http://www.weblizards.de/\" target=\"_blank\" style=\"color: #000\" title=\"Weblizards - Custom Internet Solutions\">Weblizards - Custom Internet Solutions</a></span>"]
         });
         return this.panel;
     },
@@ -152,10 +152,9 @@ pimcore.report.piwik.settings = Class.create({
             ]
         };
 				
-				// If the credentials are already configured try to fetch the sitename
-				if ((this.parent.getValue("piwik.piwikurl") != "") && (this.parent.getValue("piwik.tokenauth") != ""))
-					config.items[0].store.load();
-//console.log("key: %o  name: %o  id: %o  config: %o", key, name, id, config);
+        // If the credentials are already configured try to fetch the sitename
+        if ((this.parent.getValue("piwik.piwikurl") != "") && (this.parent.getValue("piwik.tokenauth") != ""))
+            config.items[0].store.load();
         return config;
     },
 
@@ -163,21 +162,24 @@ pimcore.report.piwik.settings = Class.create({
 
         var formData = this.panel.getForm().getFieldValues();
 
-				var sites = pimcore.globalmanager.get("sites"); 
+		var sites = pimcore.globalmanager.get("sites");
         var sitesData = {}; 
 
-        // default site
-        sitesData["default"] = {
-            profile: Ext.getCmp("report_settings_piwik_profile_default").getValue(),
-            trackid: Ext.getCmp("report_settings_piwik_trackid_default").getValue(),
-            siteurl: Ext.getCmp("report_settings_piwik_siteurl_default").getValue()
-        };
+
 
         sites.each(function (record) {
-            sitesData["site_" + record.data.id] = {
-                profile: Ext.getCmp("report_settings_piwik_profile_" + record.data.id).getValue(),
-                trackid: Ext.getCmp("report_settings_piwik_trackid_" + record.data.id).getValue(),
-                siteurl: Ext.getCmp("report_settings_piwik_siteurl_" + record.data.id).getValue()
+            var id = record.data.id;
+            var key = "site_" + id;
+
+            if(!id) { // default site
+                id = "default";
+                key = "default";
+            }
+
+            sitesData[key] = {
+                profile: Ext.getCmp("report_settings_piwik_profile_" + id).getValue(),
+                trackid: Ext.getCmp("report_settings_piwik_trackid_" + id).getValue(),
+                siteurl: Ext.getCmp("report_settings_piwik_siteurl_" + id).getValue()
             };
         }, this);
 

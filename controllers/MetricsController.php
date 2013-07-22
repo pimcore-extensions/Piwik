@@ -91,10 +91,10 @@ class Piwik_MetricsController extends Pimcore_Controller_Action_Admin_Reports {
 		
 		try {
 			$rest = Piwik_Tool::getRestClient("Actions.getPageUrls");
-				} catch (Zend_Uri_Exception $e) {
+	  } catch (Zend_Uri_Exception $e) {
 			$this->_helper->json(false);
 		}
-		
+
 		$rest->idSite($siteKey);
 		if ($rest) {
 			$outputData = array();

@@ -62,7 +62,9 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
 				$query = $db->select()->from("users_permission_definitions", "count(*)")->where($db->quoteIdentifier("key")." = ".$db->quote($config->userPermissionObjectTreeKey));
 				$numrows = $db->fetchOne($query);
 			} catch (Exception $e) {
-				return "Error querying User Permission: ".$e->getMessage().$e->getCode();
+				$message = "Error querying User Permission: ".$e->getMessage().$e->getCode();
+				Logger::error("Piwik-Plugin: ".$message);
+				return $message;
 			}
 			
 			return $numrows > 0;

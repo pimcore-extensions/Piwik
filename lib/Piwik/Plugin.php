@@ -20,7 +20,7 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
 		
     public static function install() {
 			$config = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Piwik/config.xml", null, true); // Filname, section, allowModifications
-			$db = Pimcore_API_Plugin_Abstract::getDb();
+			$db = Pimcore_Resource::getConnection();
 			try {
 				$db->insert("users_permission_definitions", array(
 						"key" => $config->userPermissionObjectTreeKey,
@@ -42,7 +42,7 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
 			$config = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Piwik/config.xml", null, true); // Filname, section, allowModifications
 
 			try {
-				$db = Pimcore_API_Plugin_Abstract::getDb();
+				$db = Pimcore_Resource::getConnection();
 				$db->query("DELETE FROM users_permission_definitions WHERE ".$db->quoteIdentifier("key")." = ".$db->quote($config->userPermissionObjectTreeKey));
 			} catch (Exception $e) {
 				return "Error uninstalling the User Permission: ".$e->getMessage();
@@ -56,7 +56,7 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
     }
 
     public static function isInstalled() {
-			$db = Pimcore_API_Plugin_Abstract::getDb();
+			$db = Pimcore_Resource::getConnection();
 			$config = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Piwik/config.xml", null, true); // Filname, section, allowModifications
 			try {
 				$query = $db->select()->from("users_permission_definitions", "count(*)")->where($db->quoteIdentifier("key")." = ".$db->quote($config->userPermissionObjectTreeKey));

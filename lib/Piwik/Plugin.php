@@ -20,7 +20,7 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
 		
     public static function install() {
 			$config = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Piwik/config.xml", null, true); // Filname, section, allowModifications
-			$db = Pimcore_Resource::getConnection();
+			$db = Pimcore_Resource::get();
 			try {
 				$db->insert("users_permission_definitions", array(
 						"key" => $config->userPermissionObjectTreeKey,
@@ -42,7 +42,7 @@ class Piwik_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Pl
 			$config = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Piwik/config.xml", null, true); // Filname, section, allowModifications
 
 			try {
-				$db = Pimcore_Resource::getConnection();
+				$db = Pimcore_Resource::get();
 				$db->query("DELETE FROM users_permission_definitions WHERE ".$db->quoteIdentifier("key")." = ".$db->quote($config->userPermissionObjectTreeKey));
 			} catch (Exception $e) {
 				return "Error uninstalling the User Permission: ".$e->getMessage();

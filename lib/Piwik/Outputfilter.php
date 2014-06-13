@@ -60,9 +60,9 @@ EOL;
 
 			// search for the end <head> tag, and insert the piwik code before
 			// this method is much faster than using simple_html_dom and uses less memory
-			$headEndPosition = strpos($body, "</head>");
+			$headEndPosition = strpos($body, "</body>");
 			if($headEndPosition !== false) {
-					$body = substr_replace($body, $code."</head>", $headEndPosition, 7);
+					$body = substr_replace($body, $code."</body>", $headEndPosition, 7);
 			}
 			
 			$this->getResponse()->setBody($body);
